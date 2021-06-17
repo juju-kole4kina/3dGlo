@@ -346,22 +346,6 @@ window.addEventListener('DOMContentLoaded', () => {
          loadMessage = ' Загрузка...',
          successMessage = ' Спасибо! Мы скоро с вами свяжемся!';
 
-      /* const postData = (body, outputData, errorData) => {
-         const request = new XMLHttpRequest();
-         request.addEventListener('readystatechange', () => {
-            if (request.readyState !== 4) {
-               return;
-            }
-            if (request.status === 200) {
-               outputData();
-            } else {
-               errorData(request.status);
-            }
-         });
-         request.open('POST', './server.php');
-         request.setRequestHeader('Content-Type', 'application/json');
-         request.send(JSON.stringify(body));
-      }; */
       const postData = body => new Promise((resolve, reject) => {
          const request = new XMLHttpRequest();
 
@@ -411,17 +395,6 @@ window.addEventListener('DOMContentLoaded', () => {
                body[key] = val;
             });
 
-            /* postData(body, () => {
-               statusMessage.textContent = successMessage;
-               img.src = successImg;
-               statusMessage.insertBefore(img, statusMessage.firstChild);
-               clearInput(idForm);
-            }, error => {
-               statusMessage.textContent = errorMessage;
-               img.src = errorImg;
-               statusMessage.insertBefore(img, statusMessage.firstChild);
-               console.error(error);
-            }); */
             postData(body, () => {
                statusMessage.textContent = successMessage;
                clearInput(idForm);

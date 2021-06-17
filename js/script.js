@@ -269,7 +269,7 @@ window.addEventListener('DOMContentLoaded', () => {
          inputMessage = document.querySelector('.mess');
 
       calcBlock.addEventListener('input', (event) => {
-         event.target.value = event.target.value.replace(/[^\d\.]/g, '');
+         event.target.value = event.target.value.replace(/[^+\d\.]/g, '');
       });
 
       inputName.forEach((elem) => {
@@ -291,7 +291,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
 
       inputMessage.addEventListener('blur', (event) => {
-         event.target.value = event.target.value.replace(/[^\dа-я-]/gi, '').replace(/-+/g, '-').replace(/ +/g, ' ').trim();
+         event.target.value = event.target.value.replace(/[^\dа-я .,!?-]/gi, '').replace(/-+/g, '-').replace(/ +/g, ' ').trim();
       });
    };
 
@@ -362,9 +362,9 @@ window.addEventListener('DOMContentLoaded', () => {
          });
 
          request.open('POST', './server.php');
-         // request.setRequestHeader('Content-Type', 'multipart/form-data');
+
          request.setRequestHeader('Content-Type', 'application/json');
-         // request.send(formData);
+
          request.send(JSON.stringify(body));
       };
 

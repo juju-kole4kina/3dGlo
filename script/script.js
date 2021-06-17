@@ -342,26 +342,6 @@ window.addEventListener('DOMContentLoaded', () => {
    //send-ajax=form
 
    const sendForm = () => {
-      const errorMessage = ' Что-то пошло не так...',
-         loadMessage = ' Загрузка...',
-         successMessage = ' Спасибо! Мы скоро с вами свяжемся!';
-
-      // const postData = body => new Promise((resolve, reject) => {
-      //    const request = new XMLHttpRequest();
-
-      //    request.addEventListener('readystatechange', () => {
-      //       if (request.status === 200) {
-      //          resolve();
-      //       } else {
-      //          reject(request.status);
-      //       }
-      //    });
-
-      //    request.open('POST', './server.php');
-      //    request.setRequestHeader('Content-Type', 'application/json');
-      //    request.send(JSON.stringify(body));
-      // });
-
       const postData = body => fetch('./server.php', {
          method: 'POST',
          headers: {
@@ -385,39 +365,30 @@ window.addEventListener('DOMContentLoaded', () => {
          const form = document.getElementById(idForm);
          const statusMessage = document.createElement('div');
 
+         const showStatus = status => {
+            const img = document.createElement('img');
+            const statusList = {
+               load: {
+                  message: ' Загрузка...',
+                  img: './images/message/waiting.gif'
+               },
+               error: {
+                  message: ' Что-то пошло не так...',
+                  img: './images/message/Err.png'
+               },
+               success: {
+                  message: ' Спасибо! Мы скоро с вами свяжемся!',
+                  img: './images/message/OK.png'
+               }
+            };
+            statusMessage.textContent = statusList[status].message;
+            img.src = statusList[status].img;
+            img.height = 50;
+
+            statusMessage.insertBefore(img, statusMessage.firstChild);
+         };
+
          statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
-
-         // form.addEventListener('submit', event => {
-         //    const formData = new FormData(form);
-         //    const body = {};
-
-         //    statusMessage.textContent = loadMessage;
-         //    event.preventDefault();
-         //    form.appendChild(statusMessage);
-
-         //    formData.forEach((val, key) => {
-         //       body[key] = val;
-         //    });
-
-         // postData(body, () => {
-         //    statusMessage.textContent = successMessage;
-         //    clearInput(idForm);
-         // }, error => {
-         //    statusMessage.textContent = errorMessage;
-         //    console.error(error);
-         // });
-
-         //    postData(Object.fromEntries(new FormData(form)))
-         //       .then(response => {
-         //          if (response.status !== 200) throw new Error(`Status network ${request.status}`);
-         //          showStatus('success');
-         //          clearInput(idForm);
-         //       })
-         //       .catch(error => {
-         //          showStatus('error');
-         //          console.error(error);
-         //       });
-         // });
 
          form.addEventListener('submit', event => {
 
@@ -439,6 +410,7 @@ window.addEventListener('DOMContentLoaded', () => {
                   console.error(error);
                });
          });
+
 
       };
 

@@ -286,7 +286,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       inputPhone.forEach((elem) => {
          elem.addEventListener('blur', (event) => {
-            event.target.value = event.target.value.replace(/[^()-\d]/g, '').replace(/-+/g, '-').replace(/ +/g, ' ').trim();
+            event.target.value = event.target.value.replace(/[^()+-\d]/g, '').replace(/-+/g, '-').replace(/ +/g, ' ').trim();
          });
       });
 
@@ -342,11 +342,27 @@ window.addEventListener('DOMContentLoaded', () => {
    //send-ajax=form
 
    const sendForm = () => {
-      const errorMessage = 'Что-то пошло не так...',
-         loadMessage = 'Загрузка...',
-         successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+      const errorMessage = ' Что-то пошло не так...',
+         loadMessage = ' Загрузка...',
+         successMessage = ' Спасибо! Мы скоро с вами свяжемся!';
 
-      const postData = (body, outputData, errorData) => {
+      /* const postData = (body, outputData, errorData) => {
+         const request = new XMLHttpRequest();
+         request.addEventListener('readystatechange', () => {
+            if (request.readyState !== 4) {
+               return;
+            }
+            if (request.status === 200) {
+               outputData();
+            } else {
+               errorData(request.status);
+            }
+         });
+         request.open('POST', './server.php');
+         request.setRequestHeader('Content-Type', 'application/json');
+         request.send(JSON.stringify(body));
+      }; */
+      const postData = body => new Promise((resolve, reject) => {
          const request = new XMLHttpRequest();
 
          request.addEventListener('readystatechange', () => {
@@ -355,21 +371,20 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             if (request.status === 200) {
-               outputData();
+               resolve();
             } else {
-               errorData(request.status);
+               reject(request.status);
             }
          });
 
          request.open('POST', './server.php');
-         // request.setRequestHeader('Content-Type', 'multipart/form-data');
          request.setRequestHeader('Content-Type', 'application/json');
-         // request.send(formData);
          request.send(JSON.stringify(body));
-      };
+      });
 
       const clearInput = idForm => {
          const form = document.getElementById(idForm);
+
          [...form.elements]
             .filter(item =>
                item.tagName.toLowerCase() !== 'button' &&
@@ -396,6 +411,17 @@ window.addEventListener('DOMContentLoaded', () => {
                body[key] = val;
             });
 
+            /* postData(body, () => {
+               statusMessage.textContent = successMessage;
+               img.src = successImg;
+               statusMessage.insertBefore(img, statusMessage.firstChild);
+               clearInput(idForm);
+            }, error => {
+               statusMessage.textContent = errorMessage;
+               img.src = errorImg;
+               statusMessage.insertBefore(img, statusMessage.firstChild);
+               console.error(error);
+            }); */
             postData(body, () => {
                statusMessage.textContent = successMessage;
                clearInput(idForm);
@@ -404,13 +430,13 @@ window.addEventListener('DOMContentLoaded', () => {
                console.error(error);
             });
          });
+
       };
 
       processingForm('form1');
       processingForm('form2');
       processingForm('form3');
    };
-
 
    countTimer('10 july 2021');
 

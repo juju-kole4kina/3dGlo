@@ -1,3 +1,5 @@
+import checkInput from "./checkInput";
+
 const sendForm = () => {
    const postData = body => fetch('./server.php', {
       method: 'POST',
@@ -16,6 +18,12 @@ const sendForm = () => {
             item.type !== 'button')
          .forEach(item =>
             item.value = '');
+   };
+
+   const closePopup = () => {
+      const popup = document.querySelector('.popup');
+      // statusMessage.textContent = '';
+      popup.style.display = 'none';
    };
 
    const processingForm = idForm => {
@@ -47,6 +55,10 @@ const sendForm = () => {
 
       statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
 
+      const clearMessage = () => {
+         statusMessage.textContent = '';
+      };
+
       form.addEventListener('submit', event => {
 
          event.preventDefault();
@@ -61,13 +73,18 @@ const sendForm = () => {
                if (response.status !== 200) throw new Error(`Status network ${request.status}`);
                showStatus('success');
                clearInput(idForm);
+               setTimeout(closePopup, 3000);
+               setTimeout(clearMessage, 3000);
             })
             .catch(error => {
                showStatus('error');
                console.error(error);
             });
-      });
 
+         if (!checkInput) {
+            event.preventDefault();
+         }
+      });
 
    };
 

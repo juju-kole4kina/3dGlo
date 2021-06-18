@@ -28,7 +28,7 @@ const calc = (price = 100) => {
       }
 
 
-      totalValue.textContent = total;
+      totalValue.textContent = Math.floor(total);
    };
 
    calckBlock.addEventListener('change', (event) => {

@@ -11,7 +11,7 @@ import calc from './modules/calc';
 import slider from './modules/slider';
 import sendForm from './modules/sendForm';
 
-
+maskPhone('.form-phone');
 countTimer('10 july 2021');
 toggleMenu();
 togglePopup();

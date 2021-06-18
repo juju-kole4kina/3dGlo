@@ -18,7 +18,6 @@ togglePopup();
 tabs();
 addDot();
 setCommandImg();
-checkInput();
 calc(100);
 slider();
 sendForm();

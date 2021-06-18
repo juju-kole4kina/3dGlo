@@ -63,27 +63,29 @@ const sendForm = () => {
 
          event.preventDefault();
 
-         showStatus('load');
 
-         form.appendChild(statusMessage);
-
-         // postData(body)
-         postData(Object.fromEntries(new FormData(form)))
-            .then(response => {
-               if (response.status !== 200) throw new Error(`Status network ${request.status}`);
-               showStatus('success');
-               clearInput(idForm);
-               setTimeout(closePopup, 3000);
-               setTimeout(clearMessage, 3000);
-            })
-            .catch(error => {
-               showStatus('error');
-               console.error(error);
-            });
-
-         if (!checkInput) {
-            event.preventDefault();
+         if (checkInput(event.target)) {
+            showStatus('load');
+            form.appendChild(statusMessage);
+            // postData(body)
+            postData(Object.fromEntries(new FormData(form)))
+               .then(response => {
+                  if (response.status !== 200) throw new Error(`Status network ${request.status}`);
+                  showStatus('success');
+                  clearInput(idForm);
+                  setTimeout(closePopup, 3000);
+                  setTimeout(clearMessage, 3000);
+               })
+               .catch(error => {
+                  showStatus('error');
+                  console.error(error);
+               });
          }
+         else {
+            statusMessage.textContent = 'Пошёл ты нахер козёл';
+            form.appendChild(statusMessage);
+         };
+
       });
 
    };
